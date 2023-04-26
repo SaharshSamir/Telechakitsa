@@ -1,10 +1,10 @@
 {
-    "name": "medx",
+    "name": "telechakitsa",
     "version": "1.0.0",
     "description": "",
     "main": "server.js",
     "engines": {
-      "node": "16.13.2"
+      "node": "16.x"
     },
     "scripts": {
       "start" : "node server.js",
