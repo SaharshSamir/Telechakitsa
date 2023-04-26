@@ -8,7 +8,9 @@ const Patient = mongoose.model("Patient");
 
 const opts = {};
 opts.jwtFromRequest = ExtractJWT.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = keys.secretKey;
+opts.secretOrKey = keys.secretOrKey;
+console.log(keys.secretOrKey);
+console.log(keys);
 
 module.exports = passport => {
 	passport.use(

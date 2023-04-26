@@ -11,7 +11,7 @@ export const registerDoctor = (userdata, history) => dispatch => {
 			userdata
 		})
 		.then(res => {
-			history.push("/login");
+			history("/login");
 		})
 		.catch(err =>
 			dispatch({
@@ -23,41 +23,57 @@ export const registerDoctor = (userdata, history) => dispatch => {
 
 // Register patient
 export const registerPatient = (userdata, history) => dispatch => {
+    console.log(history);
 	axios
 		.post("/api/patients/register", {
 			userdata
 		})
 		.then(res => {
-			history.push("/login");
+			history("/login");
 		})
-		.catch(err =>
+		.catch(err => {
+            console.log(err);
 			dispatch({
 				type: GET_ERRORS,
-				data: err.response.data
+				data: err.res.data
 			})
+        }
 		);
 };
 
 // Login user
 export const loginUser = userdata => dispatch => {
-	axios
-		.post("/api/user/login", {
-			userdata
-		})
+	console.log("user data", userdata);
+	// fetch("http://localhost:3000/api/user/login", {
+	// 	method: "POST", 
+	// 	headers: {
+	// 		"Content-Type": "application/json",
+	// 	  },
+	// 	body: JSON.stringify(userdata)
+	// })
+	 axios
+	 	.post("http://localhost:3000/api/user/login", {
+	 		userdata
+	 	})
 		.then(res => {
+            console.log("login response", res);
 			if (res.data.token) {
 				const { token } = res.data;
 				localStorage.setItem("jwtToken", token);
 				setAuthToken(token);
 				const decoded = jwtDecode(token);
+				console.log("decoded", decoded);
 				dispatch(setCurrentUser(decoded));
 			}
 		})
 		.catch(err => {
-			dispatch({
-				type: GET_ERRORS,
-				data: err.response.data
-			});
+            console.log(err);
+            if(err.res) {
+                dispatch({
+                    type: GET_ERRORS,
+                    data: err.res.data
+                });
+            }
 		});
 };
 
@@ -70,6 +86,7 @@ export const logout = () => dispatch => {
 
 // Set current user authenticated
 export const setCurrentUser = decoded => {
+	console.log(decoded.typeOfUser);
 	switch (decoded.typeOfUser) {
 		case "Doctor":
 			return {

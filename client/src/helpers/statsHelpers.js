@@ -37,7 +37,7 @@ function countInArray(stars){
 function getAgesData(data) {
 	let menData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		womenData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-	data.map(elem => {
+	data?.map(elem => {
         if(elem.settings) {
             if(elem.settings.sex === "male") {
                 menData[decide(calculateAge(new Date(elem.settings.birthday)))]++;

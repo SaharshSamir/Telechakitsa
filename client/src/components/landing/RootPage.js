@@ -14,8 +14,8 @@ import Header from "../app-bar/Header";
 const styles = theme => ({
 	root: {
 		...theme.mixins.gutters(),
-		paddingTop: theme.spacing.unit * 2,
-		paddingBottom: theme.spacing.unit * 2
+		paddingTop: theme.spacing(2),
+		paddingBottom: theme.spacing(2)
 	},
 	dimensions: {
 		width: "30vw",
@@ -27,43 +27,41 @@ const styles = theme => ({
 	}
 });
 
-class RootPage extends Component {
-	render() {
-		const { classes } = this.props;
-		return (
-			<div>
-				<Header headerLabel="Med-X" />
-				<div className={classes.dimensions}>
-					<Typography variant="h4" align="center">
-						Welcome to Med-X
-					</Typography>
-					<Typography variant="h6" align="center">
-						Simple medical info-system, that allows patients
-						communicate with doctors and vice versa
-					</Typography>
-					<Link to="/register">
-						<Button
-							className={classes.margins}
-							variant="contained"
-							fullWidth={true}
-							color="secondary"
-							size="large">
-							Register
-						</Button>
-					</Link>
-					<Link to="/login">
-						<Button
-							variant="outlined"
-							fullWidth={true}
-							color="secondary"
-							size="large">
-							Login
-						</Button>
-					</Link>
-				</div>
-			</div>
-		);
-	}
+function RootPage(props) {
+    const { classes } = props;
+    return (
+        <div>
+            <Header headerLabel="Telechikitsa" />
+            <div className={classes.dimensions}>
+                <Typography variant="h4" align="center">
+                    Welcome to Telechikitsa
+                </Typography>
+                <Typography variant="h6" align="center">
+                    Simple medical info-system, that allows patients
+                    communicate with doctors and vice versa
+                </Typography>
+                <Link to="/register">
+                    <Button
+                        className={classes.margins}
+                        variant="contained"
+                        fullWidth={true}
+                        color="secondary"
+                        size="large">
+                        Register
+                    </Button>
+                </Link>
+                <Link to="/login">
+                    <Button
+                        variant="outlined"
+                        fullWidth={true}
+                        color="secondary"
+                        size="large">
+                        Login
+                    </Button>
+                </Link>
+            </div>
+        </div>
+    );
 }
 
 RootPage.propTypes = {

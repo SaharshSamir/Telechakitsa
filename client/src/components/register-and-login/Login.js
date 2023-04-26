@@ -2,7 +2,7 @@
   Login page
   @imported in App
 */
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
@@ -34,137 +34,132 @@ const styles = theme => ({
 	}
 });
 
-class Login extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			email: "",
-			password: "",
-			errors: {}
-		};
-		this.onChange = this.onChange.bind(this);
-		this.onSubmit = this.onSubmit.bind(this);
-		this.loginErr = this.loginErr.bind(this);
-	}
+function Login (props){
+    const [state, setState] = useState({
+        email: "",
+        password: "",
+        errors: {}
+    });
 
-	componentDidMount() {
-		if (this.props.auth.user.typeOfUser === "Doctor") {
-			if (this.props.auth.isAuthenticated) {
-				this.props.history.push("/doctor/home");
-			}
+	useEffect(() => {
+    console.log("running", props.history);
+        
+		if (props.errors) {
+			setState({ errors: props.errors });
 		}
-		if (this.props.auth.user.typeOfUser === "Patient") {
-			if (this.props.auth.isAuthenticated) {
-				this.props.history.push("/patient/home");
-			}
+		if (props.auth.user.typeOfUser === "Doctor" && props.auth.isDoctorAuthenticated && props.history) {
+            props.history("/doctor/home");
 		}
-	}
+		if (props.auth.user.typeOfUser === "Patient" && props.auth.isPatientAuthenticated && props.history) {
+            props.history("/patient/home");
+		}
+    }, [props]);
 
-	onSubmit(ev) {
+	function onSubmit(ev) {
 		ev.preventDefault();
 		const userData = {
-			email: this.state.email,
-			password: this.state.password
+			email: state.email,
+			password: state.password
 		};
-		this.props.loginUser(userData);
+		props.loginUser(userData);
 	}
 
-	onChange(ev) {
-		this.setState({
+	function onChange(ev) {
+		setState({
+            ...state, 
 			[ev.target.name]: ev.target.value,
 			errors: {}
 		});
+        console.log(state);
 	}
 
-	loginErr(errMsg) {
+	function loginErr(errMsg) {
 		if (errMsg) {
 			return <div className="login-err">{errMsg}</div>;
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.errors) {
-			this.setState({ errors: nextProps.errors });
-		}
-		if (nextProps.auth.user.typeOfUser === "Patient") {
-			if (nextProps.auth.isPatientAuthenticated) {
-				this.props.history.push("/patient/home");
-			}
-		}
-		if (nextProps.auth.user.typeOfUser === "Doctor") {
-			if (nextProps.auth.isDoctorAuthenticated) {
-				this.props.history.push("/doctor/home");
-			}
-		}
-	}
+	//function componentWillReceiveProps(nextProps) {
+	//	if (nextProps.errors) {
+	//		setState({ errors: nextProps.errors });
+	//	}
+	//	if (nextProps.auth.user.typeOfUser === "Patient") {
+	//		if (nextProps.auth.isPatientAuthenticated) {
+	//			props.history.push("/patient/home");
+	//		}
+	//	}
+	//	if (nextProps.auth.user.typeOfUser === "Doctor") {
+	//		if (nextProps.auth.isDoctorAuthenticated) {
+	//			props.history.push("/doctor/home");
+	//		}
+	//	}
+	//}
 
-	render() {
-		const { classes } = this.props;
-		const { errors } = this.state;
-		return (
-			<div>
-				<Header headerLabel={"Login"} back={true} toLocation="/" />
+    const { classes } = props;
+    const { errors } = state;
+    return (
+        <div>
+            <Header headerLabel={"Login"} back={true} toLocation="/" />
 
-				<Paper elevation={3} className={classes.paperWidth}>
-					<Typography
-						className={classes.typographyPadding}
-						variant="h4"
-						align="center">
-						Log In
-					</Typography>
+            <Paper elevation={3} className={classes.paperWidth}>
+                <Typography
+                    className={classes.typographyPadding}
+                    variant="h4"
+                    align="center">
+                    Log In
+                </Typography>
 
-					<form onSubmit={this.onSubmit}>
-						<div className="login-container">
-							{this.loginErr(
-								`${
-									errors
-										? errors.email
-											? errors.email
-											: errors.password
-											? errors.password
-											: ""
-										: ""
-								}`
-							)}
-							<FormControl error={errors.email}>
-								<InputLabel>Enter your E-mail</InputLabel>
-								<Input
-									name="email"
-									type="email"
-									placeholder="E-Mail"
-									className={`${classes.width} ${
-										classes.margin
-									}`}
-									required={true}
-									onChange={this.onChange}
-								/>
-							</FormControl>
-							<FormControl error={errors.password}>
-								<InputLabel>Enter your password</InputLabel>
-								<Input
-									name="password"
-									type="password"
-									placeholder="Password"
-									className={`${classes.width} ${
-										classes.margin
-									}`}
-									required={true}
-									onChange={this.onChange}
-								/>
-							</FormControl>
-							<Button
-								variant="contained"
-								color="secondary"
-								className={`${classes.width} ${classes.margin}`}
-								onClick={this.onSubmit}>
-								Submit
-							</Button>
-						</div>
-					</form>
-				</Paper>
-			</div>
-		);
-	}
+                <form onSubmit={onSubmit}>
+                    <div className="login-container">
+                        {loginErr(
+                            `${
+                                errors
+                                    ? errors.email
+                                        ? errors.email
+                                        : errors.password
+                                        ? errors.password
+                                        : ""
+                                    : ""
+                            }`
+                        )}
+                        <FormControl error={errors.email}>
+                            <InputLabel>Enter your E-mail</InputLabel>
+                            <Input
+                                name="email"
+                                type="email"
+                                placeholder="E-Mail"
+                                className={`${classes.width} ${
+                                    classes.margin
+                                }`}
+                                required={true}
+                                onChange={onChange}
+                            />
+                        </FormControl>
+                        <FormControl error={errors.password}>
+                            <InputLabel>Enter your password</InputLabel>
+                            <Input
+                                name="password"
+                                type="password"
+                                placeholder="Password"
+                                className={`${classes.width} ${
+                                    classes.margin
+                                }`}
+                                required={true}
+                                onChange={onChange}
+                            />
+                        </FormControl>
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            className={`${classes.width} ${classes.margin}`}
+                            onClick={onSubmit}>
+                            Submit
+                        </Button>
+                    </div>
+                </form>
+            </Paper>
+        </div>
+    );
 }
 
 Login.propTypes = {

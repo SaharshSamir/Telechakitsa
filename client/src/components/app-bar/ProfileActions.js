@@ -35,10 +35,10 @@ import LocalDoctorProfile from "../doctor/profile/LocalDoctorProfile";
 // Actions
 import { logout } from "../../actions/authorizationAction";
 import { setToken, getUserData } from "../../actions/utilsActions";
-
-const TokenGenerator = require("uuid-token-generator");
-
-const token = new TokenGenerator().generate();
+import { v4 as uuidv4 } from 'uuid';
+ // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+const token = uuidv4();
+//const tnew UIDGenerator().generateSync()oken = new TokenGenerator().generate();
 
 const styles = theme => ({
 	root: {

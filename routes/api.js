@@ -16,6 +16,8 @@ const validateLoginInput = require("../validation/loginValdation");
 // @desc  login user
 // access Public
 router.post("/login", (req, res) => {
+	console.log("LOGIN");
+	console.log(req.body);
 	const { errors, isValid } = validateLoginInput(req.body.userdata);
 	const { email, password } = req.body.userdata;
 	// Check validation
@@ -39,7 +41,8 @@ router.post("/login", (req, res) => {
 							typeOfUser: "Patient"
 						}; // Create JWT Payload
 						// Sign Token
-						jwt.sign(payload, keys.secretKey, (err, token) => {
+						console.log("keys", keys);
+						jwt.sign(payload, keys.secretOrKey, (err, token) => {
 							if (err) console.log(err);
 							res.json({
 								success: true,
@@ -77,7 +80,7 @@ router.post("/login", (req, res) => {
 									// Sign Token
 									jwt.sign(
 										payload,
-										keys.secretKey,
+										keys.secretOrKey,
 										(err, token) => {
 											if (err) console.log(err);
 											res.json({

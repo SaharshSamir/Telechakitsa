@@ -81,6 +81,7 @@ class DoctorTabs extends Component {
 							onChange={this.handleChange}
 							centered>
 							<Tab label="Stats" />
+							<Tab label="Blogs" />
 							<Tab label="Patients" />
 							<Tab label="Upcoming visits" />
 						</Tabs>
@@ -112,6 +113,7 @@ class DoctorTabs extends Component {
 							}
 						</TabContainer>
 					)}
+                        
 				</div>
 			</div>
 		);

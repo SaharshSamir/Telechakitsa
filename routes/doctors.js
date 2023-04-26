@@ -114,12 +114,10 @@ router.get(
 						_id: {
 							$in: monData
 						}
-					},
-					(err, patients) => {
+					}).then((err, patients) => {
 						if (err) console.log(err);
 						res.send(patients);
-					}
-				);
+					})
 			})
 			.catch(err => console.log(err));
 	}
@@ -288,43 +286,45 @@ router.get(
 					elem => new mongoose.Types.ObjectId(elem._id)
 				);
 				Patient.find(
-					{ _id: { $in: mongooseData } },
-					(err, patients) => {
-						if (err) console.log(err);
-						// @ages
-						sexesBar.series = statsHelpers.getAgesData(patients);
-						// @ages
+					{ _id: { $in: mongooseData } })
+                    .then(
+                        (err, patients) => {
+                            if (err) console.log(err);
+                            // @ages
+                            sexesBar.series = statsHelpers.getAgesData(patients);
+                            // @ages
 
-						// @sexesPieChart
-						patients.forEach(patient => {
-							if (patient.settings) {
-								switch (patient.settings.sex) {
-									case "male":
-										sexesPieMen++;
-										break;
-									case "female":
-										sexesPieWomen++;
-										break;
-									default:
-										break;
-								}
-							}
-						});
+                            // @sexesPieChart
+                            patients?.forEach(patient => {
+                                if (patient.settings) {
+                                    switch (patient.settings.sex) {
+                                        case "male":
+                                            sexesPieMen++;
+                                            break;
+                                        case "female":
+                                            sexesPieWomen++;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            });
 
-						sexesPie.series[0] = sexesPieMen;
-						sexesPie.series[1] = sexesPieWomen;
-						// @sexesPieChart
+                            sexesPie.series[0] = sexesPieMen;
+                            sexesPie.series[1] = sexesPieWomen;
+                            // @sexesPieChart
 
-						res.send({
-							quantity,
-							sexesPie,
-							sexesBar,
-							business,
-							satisfaction,
-							monthlyVisitors
-						});
-					}
-				);
+                            res.send({
+                                quantity,
+                                sexesPie,
+                                sexesBar,
+                                business,
+                                satisfaction,
+                                monthlyVisitors
+                            });
+                        }
+                    )
+				//);
 			})
 			.catch(err => console.log(err));
 	}

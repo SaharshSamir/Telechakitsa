@@ -79,12 +79,12 @@ class PatientTabs extends Component {
 							onChange={this.handleChange}
 							centered>
 							<Tab label="Doctors" />
-							<Tab label="E-card" />
-							<Tab label="recepies" />
-							<Tab label="planned visits" />
+							<Tab label="Documents" />
+							<Tab label="Prescription" />
+							<Tab label="Planned visits" />
 						</Tabs>
 					</AppBar>
-					{value === 0 && (
+					{/* {value === 0 && (
 						<TabContainer>
 							<DoctorsList />
 						</TabContainer>
@@ -107,7 +107,7 @@ class PatientTabs extends Component {
 								<Calendar appointments={defProps} />
 							)}
 						</TabContainer>
-					)}
+					)} */}
 				</div>
 			</div>
 		);
